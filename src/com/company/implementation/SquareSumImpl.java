@@ -11,7 +11,7 @@ import java.util.concurrent.*;
  */
 public class SquareSumImpl implements SquareSum {
     private static final String PROBLEMS_PATTERN =
-            "There were the problems with the calculation of the result, and, unfortunately, the result is unachievable";
+            "Class name: %s: There were the problems with the calculation of the result, and, unfortunately, the result is unachievable";
 
     private boolean showDiagnostic;
 
@@ -78,29 +78,29 @@ public class SquareSumImpl implements SquareSum {
 
         // Execute the tasks
         ExecutorService executor = Executors.newCachedThreadPool();
-        List<Future<Long>> result;
+        List<Future<Long>> resultParts;
         try {
-            result = executor.invokeAll(squareSumCalculation);
+            resultParts = executor.invokeAll(squareSumCalculation);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            result = null;
+            resultParts = null;
         }
 
         // Get the results
-        if (result != null) {
-            for (Future<Long> longFuture : result) {
+        if (resultParts != null) {
+            for (Future<Long> longFuture : resultParts) {
                 try {
                     System.out.println(longFuture.get());
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
-                    result = null;
+                    resultParts = null;
                 }
             }
         }
 
         // Check the result
-        if (result == null) {
-            System.out.println(PROBLEMS_PATTERN);
+        if (resultParts == null) {
+            System.out.println(String.format(PROBLEMS_PATTERN, getClass().getName()));
         }
 
         return 0L;
