@@ -2,6 +2,8 @@ package com.company.test;
 
 import com.company.implementation.SquareSumImpl;
 
+import java.util.Random;
+
 /**
  * Created by Yevgen on 02.04.2016 as a part of the project "JEE_Unit_3.2_Homework".
  */
@@ -15,13 +17,15 @@ public class SquareSumTest {
     private final static int NUMBER_OF_THREADS = 15;
 
     public void demonstrate(boolean showDiagnostic) {
+
+        System.out.println(String.format(RESULT_MESSAGE_PATTERN, ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
+                NUMBER_OF_THREADS, new SquareSumImpl(showDiagnostic).getSquareSum(new Random().ints(ARRAY_SIZE, ELEMENT_VALUE_ORIGIN,
+                        ELEMENT_VALUE_BOUND).toArray(), NUMBER_OF_THREADS)));
+
         /*
         System.out.println(String.format(RESULT_MESSAGE_PATTERN, ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
-                NUMBER_OF_THREADS, new SquareSumImpl().getSquareSum(new Random().ints(ARRAY_SIZE, ELEMENT_VALUE_ORIGIN,
-                        ELEMENT_VALUE_BOUND).toArray(), NUMBER_OF_THREADS)));
-                        */
-        System.out.println(String.format(RESULT_MESSAGE_PATTERN, ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
                 NUMBER_OF_THREADS, new SquareSumImpl(showDiagnostic).getSquareSum(new int[] {1,2,3,4,5,6,7,8,9, 10, 11}, 3)));
+                */
 
     }
 }

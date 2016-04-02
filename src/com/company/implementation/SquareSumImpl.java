@@ -45,13 +45,11 @@ public class SquareSumImpl implements SquareSum {
 
             if (showDiagnostic) {
                 System.out.println(String.format(DIAGNOSTIC_PATTERN, getClass().getName(), Thread.currentThread().getName(), startIndex, elementQuantity, result));
-
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
 
             return result;
@@ -76,35 +74,38 @@ public class SquareSumImpl implements SquareSum {
             startIndex += thisPortion;
         }
 
+        long result = 0L;
+
         // Execute the tasks
         ExecutorService executor = Executors.newCachedThreadPool();
-        List<Future<Long>> resultParts;
         try {
-            resultParts = executor.invokeAll(squareSumCalculation);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            resultParts = null;
-        }
-
-        // Get the results
-        if (resultParts != null) {
-            for (Future<Long> longFuture : resultParts) {
-                try {
-                    System.out.println(longFuture.get());
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                    resultParts = null;
+            List<Future<Long>> resultParts;
+            try {
+                resultParts = executor.invokeAll(squareSumCalculation);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                resultParts = null;
+            }
+            // Get and process the results
+            if (resultParts != null) {
+                for (Future<Long> longFuture : resultParts) {
+                    try {
+                        result += longFuture.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                        resultParts = null;
+                    }
                 }
             }
+
+            // Check the result
+            if (resultParts == null) {
+                System.out.println(String.format(PROBLEMS_PATTERN, getClass().getName()));
+            }
+        } finally {
+            executor.shutdown();
         }
 
-        // Check the result
-        if (resultParts == null) {
-            System.out.println(String.format(PROBLEMS_PATTERN, getClass().getName()));
-        }
-
-        return 0L;
+        return result;
     }
-
-
 }
