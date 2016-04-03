@@ -4,6 +4,7 @@ import com.company.interfaces.SquareSum;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.*;
 
 /**
@@ -12,15 +13,21 @@ import java.util.concurrent.*;
 public class SquareSumImpl implements SquareSum {
     private static final String PROBLEMS_PATTERN =
             "Class name: %s: There were the problems with the calculation of the result, and, unfortunately, the result is unachievable";
+    private static final String START_TO_GET_RESULTS_PATTERN = "Start to get result from %d threads ...";
+    private static final String PHASER_ARRIVE_AND_AWAIT_ADVANCE_PATTERN = "Phaser %s is going to register another arriving and awaiting ...";
 
     private boolean showDiagnostic;
+
+    private Phaser phaser;
 
     public SquareSumImpl(boolean showDiagnostic) {
         this.showDiagnostic = showDiagnostic;
     }
 
     private class CalcSquareSumPart implements Callable<Long> {
+        private static final int SLEEPING_INTERVAL_BOUND = 5000;
         private static final String DIAGNOSTIC_PATTERN = "Class name: %s, Thread: %s, startIndex: %d, quantity of elements: %d, result: %d";
+        private static final String SLEEPING_PATTERN = "Class name: %s, Thread: %s has done its work and is sleeping for %d ms  ...";
 
         private int[] values;
         private int startIndex;
@@ -44,12 +51,14 @@ public class SquareSumImpl implements SquareSum {
             }
 
             if (showDiagnostic) {
-                System.out.println(String.format(DIAGNOSTIC_PATTERN, getClass().getName(), Thread.currentThread().getName(), startIndex, elementQuantity, result));
+                int sleepingInterval = new Random().nextInt(SLEEPING_INTERVAL_BOUND);
+                System.out.println(String.format(SLEEPING_PATTERN, getClass().getName(), Thread.currentThread().getName(), sleepingInterval));
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(sleepingInterval);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println(String.format(DIAGNOSTIC_PATTERN, getClass().getName(), Thread.currentThread().getName(), startIndex, elementQuantity, result));
             }
 
             return result;
@@ -59,6 +68,14 @@ public class SquareSumImpl implements SquareSum {
         public Long call() throws Exception {
             return getSquareSum();
         }
+    }
+
+    private void await() {
+        if (showDiagnostic) {
+            System.out.println(String.format(PHASER_ARRIVE_AND_AWAIT_ADVANCE_PATTERN, phaser.getClass().getName()));
+        }
+        phaser.arriveAndAwaitAdvance();
+
     }
 
     @Override
@@ -76,6 +93,9 @@ public class SquareSumImpl implements SquareSum {
 
         long result = 0L;
 
+        // Prepare barrier
+        phaser = new Phaser(numberOfThreads);
+
         // Execute the tasks
         ExecutorService executor = Executors.newCachedThreadPool();
         try {
@@ -86,8 +106,13 @@ public class SquareSumImpl implements SquareSum {
                 e.printStackTrace();
                 resultParts = null;
             }
+
+            if (showDiagnostic) {
+                System.out.println(String.format(START_TO_GET_RESULTS_PATTERN, numberOfThreads));
+            }
             // Get and process the results
             if (resultParts != null) {
+                long results[] = new long[resultParts.size()];
                 for (Future<Long> longFuture : resultParts) {
                     try {
                         result += longFuture.get();

@@ -14,7 +14,7 @@ public class SquareSumTest {
     private final static int ARRAY_SIZE = 100000;
     private final static int ELEMENT_VALUE_ORIGIN = 0;
     private final static int ELEMENT_VALUE_BOUND = 1000;
-    private final static int NUMBER_OF_THREADS = 15;
+    private final static int NUMBER_OF_THREADS = 3;
 
     public void demonstrate(boolean showDiagnostic) {
 
