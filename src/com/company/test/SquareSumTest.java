@@ -1,5 +1,6 @@
 package com.company.test;
 
+import com.company.implementation.SquareSumUsingFuture;
 import com.company.implementation.SquareSumUsingPhaser;
 
 import java.util.Random;
@@ -23,14 +24,15 @@ public class SquareSumTest {
     }
 
     public void demonstrate(boolean showDiagnostic) {
-/*
+        int[] testData = generateTestData();
+
         System.out.println(String.format(IMPLEMENTATION_INFORMATION_PATTERN, SquareSumUsingFuture.class.getName()));
         System.out.println(String.format(RESULT_MESSAGE_PATTERN, ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
-                NUMBER_OF_THREADS, new SquareSumUsingFuture(showDiagnostic).getSquareSum(generateTestData(), NUMBER_OF_THREADS)));
-*/
+                NUMBER_OF_THREADS, new SquareSumUsingFuture(showDiagnostic).getSquareSum(testData, NUMBER_OF_THREADS)));
+
         System.out.println(String.format(IMPLEMENTATION_INFORMATION_PATTERN, SquareSumUsingPhaser.class.getName()));
         System.out.println(String.format(RESULT_MESSAGE_PATTERN, ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
-                NUMBER_OF_THREADS, new SquareSumUsingPhaser(showDiagnostic).getSquareSum(generateTestData(), NUMBER_OF_THREADS)));
+                NUMBER_OF_THREADS, new SquareSumUsingPhaser(showDiagnostic).getSquareSum(testData, NUMBER_OF_THREADS)));
 
         /*
         System.out.println(String.format(RESULT_MESSAGE_PATTERN, ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,

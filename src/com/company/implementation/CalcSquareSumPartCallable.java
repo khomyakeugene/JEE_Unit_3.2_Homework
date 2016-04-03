@@ -1,5 +1,6 @@
 package com.company.implementation;
 
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Phaser;
@@ -18,13 +19,16 @@ public class CalcSquareSumPartCallable implements Callable<Long> {
     private int elementQuantity;
     private boolean showDiagnostic;
     private Phaser phaser;
+    private HashMap<String, Long> resultMap;
 
-    public CalcSquareSumPartCallable(int[] values, int startIndex, int elementQuantity, boolean showDiagnostic, Phaser phaser) {
+    public CalcSquareSumPartCallable(int[] values, int startIndex, int elementQuantity, boolean showDiagnostic,
+                                     Phaser phaser, HashMap<String, Long> resultMap) {
         this.values = values;
         this.startIndex = startIndex;
         this.elementQuantity = elementQuantity;
         this.showDiagnostic = showDiagnostic;
         this.phaser = phaser;
+        this.resultMap = resultMap;
 
         if (phaser != null) {
             // Adds this task as a new unarrived party to this phaser.
@@ -33,7 +37,7 @@ public class CalcSquareSumPartCallable implements Callable<Long> {
     }
 
     public CalcSquareSumPartCallable(int[] values, int startIndex, int elementQuantity, boolean showDiagnostic) {
-        this (values, startIndex, elementQuantity, showDiagnostic, null);
+        this (values, startIndex, elementQuantity, showDiagnostic, null, null);
     }
 
     private long getSquareSum() {
@@ -41,21 +45,8 @@ public class CalcSquareSumPartCallable implements Callable<Long> {
 
         int upperLimit = startIndex + elementQuantity;
         upperLimit = upperLimit <= values.length ? upperLimit : values.length;
-
-        String threadName = Thread.currentThread().getName();
-        boolean needSleep = threadName.lastIndexOf("thread-2") > 0;
-
         for (int i = startIndex; i < upperLimit; i++) {
             result += Math.pow(values[i], 2);
-
-            if (needSleep) {
-                System.out.println(threadName + " sleeps ...");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
         if (showDiagnostic) {
@@ -86,6 +77,11 @@ public class CalcSquareSumPartCallable implements Callable<Long> {
                 System.out.println(String.format(AFTER_PARSING_BARRIER_PATTERN, getClass().getName(),
                         Thread.currentThread().getName()));
             }
+        }
+
+        // Store result if it needs
+        if (resultMap != null) {
+            resultMap.put(Thread.currentThread().getName(), result);
         }
 
         return result;

@@ -2,6 +2,7 @@ package com.company.implementation;
 
 import com.company.interfaces.SquareSum;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Phaser;
@@ -20,20 +21,19 @@ public class SquareSumUsingPhaser implements SquareSum {
 
     @Override
     public long getSquareSum(int[] values, int numberOfThreads) {
-        long result = 0L;
-
         Phaser phaser = new Phaser();
         // To be on the safe side with the phase-value to check its "readiness" further after submitting all the tasks
         int phase = phaser.getPhase();
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
+        HashMap<String, Long> resultMap = new HashMap<>();
         try {
             int startIndex = 0;
             int elementQuantity = values.length / numberOfThreads;
             for (int i = 0; i < numberOfThreads; i++) {
                 int thisPortion = elementQuantity + ((i == 0) ? (values.length % numberOfThreads) : 0);
                 // Intentionally do not use <Future> here just to demonstrate phaser-mechanism
-                executor.submit(new CalcSquareSumPartCallable(values, startIndex, thisPortion, showDiagnostic, phaser));
+                executor.submit(new CalcSquareSumPartCallable(values, startIndex, thisPortion, showDiagnostic, phaser, resultMap));
 
                 startIndex += thisPortion;
             }
@@ -54,10 +54,8 @@ public class SquareSumUsingPhaser implements SquareSum {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            System.out.println(getClass().getName() + ": " + Thread.currentThread().getName() + ": getSquareSum: end of calculation");
         }
 
-        return result;
+        return resultMap.values().stream().mapToLong(e -> e).sum();
     }
 }
