@@ -14,30 +14,26 @@ public class SquareSumTest {
             "The result of the square sum of the %d random generating from %d to %d integer elements, " +
                     "calculating by using %d threads, is: %d";
 
-    private final static int ARRAY_SIZE = 30;
+    private final static int ARRAY_SIZE = 100000;
     private final static int ELEMENT_VALUE_ORIGIN = 0;
     private final static int ELEMENT_VALUE_BOUND = 1000;
-    private final static int NUMBER_OF_THREADS = 3;
+    private final static int NUMBER_OF_THREADS = 4;
 
     private int[] generateTestData() {
         return new Random().ints(ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND).toArray();
     }
 
-    public void demonstrate(boolean showDiagnostic) {
+    public void demonstrate(boolean executionIllustrate, int sleepingIntervalBound) {
         int[] testData = generateTestData();
 
         System.out.println(String.format(IMPLEMENTATION_INFORMATION_PATTERN, SquareSumUsingFuture.class.getName()));
-        System.out.println(String.format(RESULT_MESSAGE_PATTERN, ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
-                NUMBER_OF_THREADS, new SquareSumUsingFuture(showDiagnostic).getSquareSum(testData, NUMBER_OF_THREADS)));
+        System.out.println(String.format(RESULT_MESSAGE_PATTERN, testData.length, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
+                NUMBER_OF_THREADS, new SquareSumUsingFuture(executionIllustrate, sleepingIntervalBound).
+                        getSquareSum(testData, NUMBER_OF_THREADS)));
 
         System.out.println(String.format(IMPLEMENTATION_INFORMATION_PATTERN, SquareSumUsingPhaser.class.getName()));
-        System.out.println(String.format(RESULT_MESSAGE_PATTERN, ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
-                NUMBER_OF_THREADS, new SquareSumUsingPhaser(showDiagnostic).getSquareSum(testData, NUMBER_OF_THREADS)));
-
-        /*
-        System.out.println(String.format(RESULT_MESSAGE_PATTERN, ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
-                NUMBER_OF_THREADS, new SquareSumUsingFuture(showDiagnostic).getSquareSum(new int[] {1,2,3,4,5,6,7,8,9, 10, 11}, 3)));
-                */
-
+        System.out.println(String.format(RESULT_MESSAGE_PATTERN, testData.length, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND,
+                NUMBER_OF_THREADS, new SquareSumUsingPhaser(executionIllustrate, sleepingIntervalBound).
+                        getSquareSum(testData, NUMBER_OF_THREADS)));
     }
 }

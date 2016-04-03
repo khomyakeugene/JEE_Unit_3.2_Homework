@@ -9,7 +9,6 @@ import java.util.concurrent.Phaser;
  * Created by Yevgen on 03.04.2016 as a part of the project "JEE_Unit_3.2_Homework".
  */
 public class CalcSquareSumPart implements Callable<Long> {
-    private static final int SLEEPING_INTERVAL_BOUND = 5000;
     private static final String DIAGNOSTIC_PATTERN = "Class name: %s, Thread: %s, startIndex: %d, quantity of elements: %d, result: %d";
     private static final String AFTER_PARSING_BARRIER_PATTERN = "Class name: %s, Thread: %s: After parsing barrier";
     public static final String SLEEPING_PATTERN = "Class name: %s, Thread: %s is sleeping for %d ms  ...";
@@ -17,16 +16,18 @@ public class CalcSquareSumPart implements Callable<Long> {
     private int[] values;
     private int startIndex;
     private int elementQuantity;
-    private boolean showDiagnostic;
+    private boolean executionIllustrate;
+    private int sleepingIntervalBound;
     private Phaser phaser;
     private HashMap<String, Long> resultMap;
 
     public CalcSquareSumPart(int[] values, int startIndex, int elementQuantity, boolean showDiagnostic,
-                             Phaser phaser, HashMap<String, Long> resultMap) {
+                             int sleepingIntervalBound, Phaser phaser, HashMap<String, Long> resultMap) {
         this.values = values;
         this.startIndex = startIndex;
         this.elementQuantity = elementQuantity;
-        this.showDiagnostic = showDiagnostic;
+        this.executionIllustrate = showDiagnostic;
+        this.sleepingIntervalBound = sleepingIntervalBound;
         this.phaser = phaser;
         this.resultMap = resultMap;
 
@@ -36,8 +37,9 @@ public class CalcSquareSumPart implements Callable<Long> {
         }
     }
 
-    public CalcSquareSumPart(int[] values, int startIndex, int elementQuantity, boolean showDiagnostic) {
-        this (values, startIndex, elementQuantity, showDiagnostic, null, null);
+    public CalcSquareSumPart(int[] values, int startIndex, int elementQuantity,
+                             boolean showDiagnostic, int sleepingIntervalBound) {
+        this (values, startIndex, elementQuantity, showDiagnostic, sleepingIntervalBound, null, null);
     }
 
     private long getSquareSum() {
@@ -45,13 +47,15 @@ public class CalcSquareSumPart implements Callable<Long> {
 
         int upperLimit = startIndex + elementQuantity;
         upperLimit = upperLimit <= values.length ? upperLimit : values.length;
+
         for (int i = startIndex; i < upperLimit; i++) {
             result += Math.pow(values[i], 2);
         }
 
-        if (showDiagnostic) {
+        if (executionIllustrate) {
             // To show the thread execute order ...
-            int sleepingInterval = new Random().nextInt(SLEEPING_INTERVAL_BOUND);
+            int sleepingInterval = (sleepingIntervalBound <= 0) ? sleepingIntervalBound :
+                    new Random().nextInt(sleepingIntervalBound);
             if (sleepingInterval > 0) {
                 System.out.println(String.format(SLEEPING_PATTERN, getClass().getName(), Thread.currentThread().getName(), sleepingInterval));
                 try {
@@ -71,17 +75,17 @@ public class CalcSquareSumPart implements Callable<Long> {
     public Long call() throws Exception {
         Long result = getSquareSum();
 
-        if (phaser != null) {
-            phaser.arriveAndAwaitAdvance();
-            if (showDiagnostic)  {
-                System.out.println(String.format(AFTER_PARSING_BARRIER_PATTERN, getClass().getName(),
-                        Thread.currentThread().getName()));
-            }
-        }
-
         // Store result if it needs
         if (resultMap != null) {
             resultMap.put(Thread.currentThread().getName(), result);
+        }
+
+        if (phaser != null) {
+            phaser.arriveAndDeregister();
+            if (executionIllustrate)  {
+                System.out.println(String.format(AFTER_PARSING_BARRIER_PATTERN, getClass().getName(),
+                        Thread.currentThread().getName()));
+            }
         }
 
         return result;
