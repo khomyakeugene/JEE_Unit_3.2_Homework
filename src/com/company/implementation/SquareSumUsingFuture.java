@@ -9,14 +9,14 @@ import java.util.concurrent.*;
 /**
  * Created by Yevgen on 02.04.2016 as a part of the project "JEE_Unit_3.2_Homework".
  */
-public class SquareSumInvokeAll implements SquareSum {
+public class SquareSumUsingFuture implements SquareSum {
     private static final String PROBLEMS_PATTERN =
             "Class name: %s: There were the problems with the calculation of the result, and, unfortunately, the result is unachievable";
     private static final String START_TO_GET_RESULTS_PATTERN = "Start to get result from %d threads ...";
 
     private boolean showDiagnostic;
 
-    public SquareSumInvokeAll(boolean showDiagnostic) {
+    public SquareSumUsingFuture(boolean showDiagnostic) {
         this.showDiagnostic = showDiagnostic;
     }
 
