@@ -33,7 +33,7 @@ public class SquareSumUsingPhaser implements SquareSum {
             for (int i = 0; i < numberOfThreads; i++) {
                 int thisPortion = elementQuantity + ((i == 0) ? (values.length % numberOfThreads) : 0);
                 // Intentionally do not use <Future> here just to demonstrate phaser-mechanism
-                executor.submit(new CalcSquareSumPartCallable(values, startIndex, thisPortion, showDiagnostic, phaser, resultMap));
+                executor.submit(new CalcSquareSumPart(values, startIndex, thisPortion, showDiagnostic, phaser, resultMap));
 
                 startIndex += thisPortion;
             }
@@ -47,7 +47,7 @@ public class SquareSumUsingPhaser implements SquareSum {
 
         // Sleep for some time to show the order of execution
         if (showDiagnostic) {
-            System.out.println(String.format(CalcSquareSumPartCallable.SLEEPING_PATTERN, getClass().getName(),
+            System.out.println(String.format(CalcSquareSumPart.SLEEPING_PATTERN, getClass().getName(),
                     Thread.currentThread().getName(), PRE_END_SLEEP_INTERVAL));
             try {
                 Thread.sleep(PRE_END_SLEEP_INTERVAL);

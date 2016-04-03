@@ -29,7 +29,7 @@ public class SquareSumUsingFuture implements SquareSum {
         List<Callable<Long>> squareSumCalculation = new ArrayList<>();
         for (int i = 0; i < numberOfThreads; i++) {
             int thisPortion = elementQuantity + ((i == 0) ? (values.length % numberOfThreads) : 0);
-            squareSumCalculation.add(new CalcSquareSumPartCallable(values, startIndex, thisPortion, showDiagnostic));
+            squareSumCalculation.add(new CalcSquareSumPart(values, startIndex, thisPortion, showDiagnostic));
             startIndex += thisPortion;
         }
 

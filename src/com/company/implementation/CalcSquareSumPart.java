@@ -8,7 +8,7 @@ import java.util.concurrent.Phaser;
 /**
  * Created by Yevgen on 03.04.2016 as a part of the project "JEE_Unit_3.2_Homework".
  */
-public class CalcSquareSumPartCallable implements Callable<Long> {
+public class CalcSquareSumPart implements Callable<Long> {
     private static final int SLEEPING_INTERVAL_BOUND = 5000;
     private static final String DIAGNOSTIC_PATTERN = "Class name: %s, Thread: %s, startIndex: %d, quantity of elements: %d, result: %d";
     private static final String AFTER_PARSING_BARRIER_PATTERN = "Class name: %s, Thread: %s: After parsing barrier";
@@ -21,8 +21,8 @@ public class CalcSquareSumPartCallable implements Callable<Long> {
     private Phaser phaser;
     private HashMap<String, Long> resultMap;
 
-    public CalcSquareSumPartCallable(int[] values, int startIndex, int elementQuantity, boolean showDiagnostic,
-                                     Phaser phaser, HashMap<String, Long> resultMap) {
+    public CalcSquareSumPart(int[] values, int startIndex, int elementQuantity, boolean showDiagnostic,
+                             Phaser phaser, HashMap<String, Long> resultMap) {
         this.values = values;
         this.startIndex = startIndex;
         this.elementQuantity = elementQuantity;
@@ -36,7 +36,7 @@ public class CalcSquareSumPartCallable implements Callable<Long> {
         }
     }
 
-    public CalcSquareSumPartCallable(int[] values, int startIndex, int elementQuantity, boolean showDiagnostic) {
+    public CalcSquareSumPart(int[] values, int startIndex, int elementQuantity, boolean showDiagnostic) {
         this (values, startIndex, elementQuantity, showDiagnostic, null, null);
     }
 
