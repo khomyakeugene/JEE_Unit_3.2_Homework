@@ -22,10 +22,6 @@ public class CalcSquareSumPart {
         this.showDiagnostic = showDiagnostic;
     }
 
-    public CalcSquareSumPart() {
-        this (new int[] {}, 0, 0, false);
-    }
-
     public Long getSquareSum() {
         long result = 0L;
 
