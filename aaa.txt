@@ -1,9 +1,8 @@
-To date, the list-opening of accounts under 
-the salary-card projects is performed prior 
-to the formation of client cases and to fulfil 
-the contract with the employees of enterprises. 
-In this regard, there is a significant amount of
-open card accounts
-(about 800 accounts per month), for which there is 
-no appointed legal affairs
-(formal contracts? completed documents?) .
+In order to meet the requirements of legislation 
+it is planned to replace the procedure of opening the card 
+accounts within the salary-card projects. 
+For that it is proposed to carry out the 
+opening of accounts after the acquisition 
+of identification documents and the signing of the 
+contract with the client, and to pre-reserve the 
+account numbers using it to print the client contracts.
