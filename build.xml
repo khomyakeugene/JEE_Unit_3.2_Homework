@@ -7,8 +7,8 @@
     <property name="jar.dir" value="${build.dir}/jar"/>
     <property name="main-class" value="com.company.Main"/>
     <property name="jar.name" value="${ant.project.name}.jar"/>
-    <property name="build.jar.name" value="${jar.dir}/${jar.name}.jar"/>
-    <property name="deploy.name" value="${deploy.dir}/${jar.name}.jar"/>
+    <property name="build.jar.name" value="${jar.dir}/${jar.name}"/>
+    <property name="deploy.name" value="${deploy.dir}/${jar.name}"/>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
@@ -32,11 +32,12 @@
         <delete dir="${deploy.dir}"/>
         <mkdir dir="${deploy.dir}"/>
         <copy file="${build.jar.name}" todir="${deploy.dir}"/>
+        <antcall target="clean"/>
     </target>
 
-    <target name="run" depends="deploy,clean">
+    <target name="run" depends="clean,deploy">
         <java jar="${deploy.name}" fork="true"/>
     </target>
 
-    <target name="main" depends="clean,run"/>
+    <target name="main" depends="run"/>
 </project>
