@@ -11,6 +11,7 @@
     <property name="deploy.name" value="${deploy.dir}/${jar.name}"/>
 
     <target name="clean">
+        <delete dir="${jar.dir}"/>
         <delete dir="${build.dir}"/>
     </target>
 
