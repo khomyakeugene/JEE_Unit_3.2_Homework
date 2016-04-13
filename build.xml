@@ -36,7 +36,7 @@
         <antcall target="clean"/>
     </target>
 
-    <target name="run" depends="clean,deploy">
+    <target name="run" depends="deploy">
         <java jar="${deploy.name}" fork="true"/>
     </target>
 
