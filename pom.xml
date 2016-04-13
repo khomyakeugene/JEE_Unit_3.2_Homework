@@ -24,7 +24,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Main</mainClass>
+                            <mainClass>com.company.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
