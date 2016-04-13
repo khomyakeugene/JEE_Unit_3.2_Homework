@@ -6,8 +6,7 @@
     <groupId>com.company</groupId>
     <artifactId>JEE_Unit_3.2_Homework</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>JEE_Unit_3.2_Homework</name>
+    <version>1.0</version>
 
     <build>
         <plugins>
