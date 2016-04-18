@@ -1,6 +1,7 @@
-package com.company.implementation;
+package com.company.calculation;
 
-import com.company.interfaces.SquareSum;
+import com.company.calculation.CalcSquareSumPart;
+import com.company.calculation.SquareSum;
 
 import java.util.ArrayList;
 import java.util.List;

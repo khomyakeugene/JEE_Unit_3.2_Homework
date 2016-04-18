@@ -1,4 +1,4 @@
-package com.company.interfaces;
+package com.company.calculation;
 
 import java.util.concurrent.ExecutionException;
 

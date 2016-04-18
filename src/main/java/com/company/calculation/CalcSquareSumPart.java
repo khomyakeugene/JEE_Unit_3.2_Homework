@@ -1,4 +1,4 @@
-package com.company.implementation;
+package com.company.calculation;
 
 import java.util.HashMap;
 import java.util.Random;

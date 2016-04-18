@@ -1,6 +1,7 @@
-package com.company.implementation;
+package com.company.calculation;
 
-import com.company.interfaces.SquareSum;
+import com.company.calculation.CalcSquareSumPart;
+import com.company.calculation.SquareSum;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -22,7 +23,6 @@ public class SquareSumUsingPhaser implements SquareSum {
 
     @Override
     public long getSquareSum(int[] values, int numberOfThreads) {
-        //Почему мы передаем 1?
         Phaser phaser = new Phaser(1);
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
