@@ -23,6 +23,7 @@ public class SquareSumTest {
         return new Random().ints(ARRAY_SIZE, ELEMENT_VALUE_ORIGIN, ELEMENT_VALUE_BOUND).toArray();
     }
 
+    //результат с Future и Phaser до миллисекунды одинаков. Возможно ли это?
     public void demonstrate(boolean executionIllustrate, int sleepingIntervalBound) {
         int[] testData = generateTestData();
 
