@@ -35,6 +35,29 @@
                 </configuration>
                 <version>2.6</version>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+                    <execution>
+                        <id>Main-execution</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <workingDirectory>${project.build.directory}</workingDirectory>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>${project.build.finalName}</argument>
+                    </arguments>
+                    <mainClass>${main.class}</mainClass>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>
