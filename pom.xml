@@ -8,6 +8,10 @@
     <packaging>jar</packaging>
     <version>1.0</version>
 
+    <properties>
+        <main.class>com.company.Main</main.class>
+    </properties>
+
     <build>
         <defaultGoal>package</defaultGoal>
         <plugins>
@@ -25,7 +29,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.company.Main</mainClass>
+                            <mainClass>${main.class}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
